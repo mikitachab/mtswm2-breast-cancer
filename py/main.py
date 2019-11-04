@@ -5,7 +5,7 @@ import json
 from pprint import pprint
 
 from features_ranking import get_features_ranking
-import features_number_experiment
+from features_number_experiment import run_experiment
 
 
 breast_cancer_columns = [
@@ -34,7 +34,7 @@ def main():
     save_json('features_ranking.json', features_ranking)
 
     # experiment
-    features_scores, params_scores = features_number_experiment.run_experiment(breast_cancer_data)
+    features_scores, params_scores = run_experiment(breast_cancer_data)
 
     save_json('features_scores.json', features_scores)
     save_json('params_scores.json', params_scores)
