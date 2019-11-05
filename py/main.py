@@ -29,6 +29,7 @@ def main():
     y = breast_cancer_data['Class']
 
     # features ranking
+    print('make features ranking')
     features_ranking = get_features_ranking(x, y)
     print_ranking(features_ranking)
     save_json('features_ranking.json', features_ranking)
@@ -42,10 +43,10 @@ def main():
     print('features scores:')
     pprint(features_scores)
 
-    pprint('params scores')
+    print('params scores')
     pprint(params_scores)
 
-    plot_result('png/result.png', features_scores)
+    plot_result('../png/result.png', features_scores)
 
 
 def get_breast_cancer_data():
