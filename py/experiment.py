@@ -1,13 +1,18 @@
 import json
+from pprint import pprint
 
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 from sklearn.model_selection import RepeatedStratifiedKFold
+from sklearn.neural_network import MLPClassifier
 
 from select_k_best_grid_search import SelectKBestGridSearch
-from sklearn.neural_network import MLPClassifier
 from dataset import get_breast_cancer_data
+from select_k_best_grid_search import select_data
+
+from confusionmatrix import make_confusion_matrix
 
 N_REPEATS = 5
 N_SPLITS = 2
@@ -30,13 +35,19 @@ def main():
     select_k_best_gs.fit(x, y)
     gs_result = select_k_best_gs.get_result()
 
-    for params_key, result in gs_result.items():
+    save_result_plots(gs_result)
+
+    best_info = select_k_best_gs.get_best_estimator_info()
+    print('best estimator info', best_info)
+
+    make_confusion_matrix(best_info, x, y, rskf_cv)
+
+
+def save_result_plots(result):
+    print('generating and saving plots')
+    for params_key, result in result.items():
         plot_params_result(result=result, title=params_key)
-
-
-def get_filename_from_mlp_params_key(params_key):
-    params = json.loads(params_key)
-    return f'hidden_layer_sizes_{params["hidden_layer_sizes"][0]}_solver_{params["solver"]}'
+    print('results plots saved')
 
 
 def plot_params_result(result, title):
@@ -53,7 +64,12 @@ def plot_params_result(result, title):
     )
     plt.title(title)
     imgfilename = get_filename_from_mlp_params_key(title)
-    plt.savefig(f'../png/experiment/{imgfilename}.png')
+    plt.savefig(f'../png/experiment/{imgfilename}')
+
+
+def get_filename_from_mlp_params_key(params_key):
+    params = json.loads(params_key)
+    return f'hidden_layer_sizes_{params["hidden_layer_sizes"][0]}_solver_{params["solver"]}.png'
 
 
 if __name__ == '__main__':
