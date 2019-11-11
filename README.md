@@ -18,7 +18,7 @@ pip install -r requirements.txt
 at `py` folder
 
 ```shell
-python3 main.py
+python3 experiment.py
 ```
 
 ## Links
